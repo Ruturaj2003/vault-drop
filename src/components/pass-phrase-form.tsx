@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   Card,
   CardContent,
@@ -9,7 +10,6 @@ import {
   CardTitle,
 } from "./ui/card";
 import { Button } from "./ui/button";
-import { useRouter } from "next/navigation";
 
 interface PassPhraseFormProps {
   setIsPhraseVerified: (val: boolean) => void;
@@ -20,69 +20,77 @@ export const PassPhraseForm = ({
   setIsPhraseVerified,
   userId,
 }: PassPhraseFormProps) => {
-  // TODO: Add Real DB : and Fetch From there
   const [passPhrase, setPassPhrase] = useState<string | null>(null);
-
   const [userPhrase, setUserPhrase] = useState<string>("");
-
   const [passwordTriesLeft, setPasswordTriesLeft] = useState<number>(4);
+  const router = useRouter();
 
+  // Fetch passphrase (mocked using userId for now)
   useEffect(() => {
     const getUserPassPhrase = async (userId: string) => {
-      // API Call
+      // TODO: Replace with real DB/API call
       const pass = userId;
-
       setPassPhrase(pass);
     };
 
     getUserPassPhrase(userId);
   }, [userId]);
 
-  const router = useRouter();
-
+  // Handle too many failed attempts
   useEffect(() => {
-    if (passwordTriesLeft == 0) {
+    if (passwordTriesLeft === 0) {
       router.push("/");
     }
   }, [passwordTriesLeft, router]);
 
-  if (!passPhrase) {
-    return <h1>Pass Gen Element</h1>;
-  }
-
   const verifyPassword = () => {
-    if (passPhrase === userPhrase) {
+    if (userPhrase === passPhrase) {
       setIsPhraseVerified(true);
     } else {
       setPasswordTriesLeft((prev) => prev - 1);
     }
   };
 
+  if (!passPhrase) {
+    return (
+      <div className="flex items-center justify-center min-h-[200px]">
+        <h1 className="text-xl font-semibold">Loading Passphrase...</h1>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex items-center justify-center">
-      <Card className=" max-w-sm flex-1">
-        <CardTitle className="p-2 text-center">
-          Verify Your Pass Phrase{" "}
-        </CardTitle>
-        <CardDescription>
-          Enter your Pass Phrase below to proceed for Uplaoding documents
-        </CardDescription>
-        <CardContent>
+    <div className="flex items-start mt-32 justify-center min-h-screen px-4">
+      <Card className="w-full max-w-md shadow-xl border rounded-2xl">
+        <div className="p-6">
+          <CardTitle className="text-center text-2xl font-semibold mb-2">
+            Verify Your Pass Phrase
+          </CardTitle>
+          <CardDescription className="text-center text-gray-500 mb-4">
+            Enter your pass phrase to proceed with uploading documents.
+          </CardDescription>
+        </div>
+
+        <CardContent className="flex flex-col gap-3 px-6">
           <input
-            className=""
             type="text"
             value={userPhrase}
             onChange={(e) => setUserPhrase(e.target.value)}
-            placeholder="Your Pass Phrase here "
+            placeholder="Your Pass Phrase"
+            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
           />
+
           {passwordTriesLeft < 4 && (
-            <h1 className="text-md text-red-500">
-              {passwordTriesLeft} Attempts Left
-            </h1>
+            <p className="text-sm text-red-500">
+              {passwordTriesLeft} attempt{passwordTriesLeft !== 1 && "s"} left
+            </p>
           )}
         </CardContent>
-        <CardFooter>
-          <Button onClick={verifyPassword}>Verify</Button>
+
+        <CardFooter className="px-6 pb-6">
+          <Button onClick={verifyPassword} className="w-full" variant="default">
+            Verify
+          </Button>
         </CardFooter>
       </Card>
     </div>
