@@ -1,6 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { SignedIn, useAuth } from "@clerk/nextjs";
+import Link from "next/link";
 
 export default function Home() {
   const user = useAuth();
@@ -11,6 +12,7 @@ export default function Home() {
 
       <SignedIn>
         <h1>Your User Id is :{user.userId} </h1>
+        <Link href={"/upload"}>Go to Upload</Link>
       </SignedIn>
     </div>
   );
