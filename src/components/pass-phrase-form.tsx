@@ -10,6 +10,7 @@ import {
   CardTitle,
 } from "./ui/card";
 import { Button } from "./ui/button";
+import { LoadingSpinner } from "./loading-spinner";
 
 interface PassPhraseFormProps {
   setIsPhraseVerified: (val: boolean) => void;
@@ -23,15 +24,24 @@ export const PassPhraseForm = ({
   const [passPhrase, setPassPhrase] = useState<string | null>(null);
   const [userPhrase, setUserPhrase] = useState<string>("");
   const [passwordTriesLeft, setPasswordTriesLeft] = useState<number>(4);
+
+  // Case Handling
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+  const [hasFetched, setHasFetched] = useState(false);
   const router = useRouter();
 
+  const getUserPassPhrase = async (userId: string) => {
+    // TODO: Replace with real DB/API call
+    // TODO : Add Error here aswell
+    const pass = userId;
+    setPassPhrase(pass);
+    setIsLoading(false);
+    setHasFetched(true);
+  };
   // Fetch passphrase (mocked using userId for now)
   useEffect(() => {
-    const getUserPassPhrase = async (userId: string) => {
-      // TODO: Replace with real DB/API call
-      const pass = userId;
-      setPassPhrase(pass);
-    };
+    setIsLoading(true);
 
     getUserPassPhrase(userId);
   }, [userId]);
@@ -43,6 +53,13 @@ export const PassPhraseForm = ({
     }
   }, [passwordTriesLeft, router]);
 
+  if (isLoading) {
+    return <LoadingSpinner></LoadingSpinner>;
+  }
+
+  if (isError) {
+    return <h1>Something went wrong </h1>;
+  }
   const verifyPassword = () => {
     if (userPhrase === passPhrase) {
       setIsPhraseVerified(true);
@@ -51,14 +68,37 @@ export const PassPhraseForm = ({
     }
   };
 
-  if (!passPhrase) {
-    return (
-      <div className="flex items-center justify-center min-h-[200px]">
-        <h1 className="text-xl font-semibold">Loading Passphrase...</h1>
-      </div>
-    );
-  }
+  return (
+    <div>
+      {hasFetched === true && passPhrase !== null ? (
+        <>
+          <VerifyPassCard
+            userPhrase={userPhrase}
+            setUserPhrase={setUserPhrase}
+            passwordTriesLeft={passwordTriesLeft}
+            verifyPassword={verifyPassword}
+          ></VerifyPassCard>
+        </>
+      ) : (
+        <>generate Pass caord compeont</>
+      )}
+    </div>
+  );
+};
 
+interface VerifyPassCardProps {
+  userPhrase: string;
+  setUserPhrase: React.Dispatch<React.SetStateAction<string>>;
+  passwordTriesLeft: number;
+  verifyPassword: () => void;
+}
+
+const VerifyPassCard = ({
+  userPhrase,
+  setUserPhrase,
+  passwordTriesLeft,
+  verifyPassword,
+}: VerifyPassCardProps) => {
   return (
     <div className="flex items-start mt-32 justify-center min-h-screen px-4">
       <Card className="w-full max-w-md shadow-xl border rounded-2xl">
