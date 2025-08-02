@@ -1,3 +1,9 @@
+import { useQuery } from "convex/react";
+import { api } from "../../convex/_generated/api";
+import { LoadingSpinner } from "./loading-spinner";
+import { VerifyPassPhraseCard } from "./verify-pass-phrase-card";
+import { GeneratePassPhraseCard } from "./generate-pass-phrase-card";
+
 interface PassPhraseFormProps {
   userId: string;
   setIsPhraseVerified: (val: boolean) => void;
@@ -28,5 +34,14 @@ export const PassPhraseForm = ({
 
 */
 
-  return <h1>Pass Phrase from</h1>;
+  const user = useQuery(api.userData.getUserData, { userId });
+
+  // Loading
+  if (user === undefined) {
+    return LoadingSpinner();
+  }
+
+  return (
+    <>{user !== null ? <VerifyPassPhraseCard /> : <GeneratePassPhraseCard />}</>
+  );
 };
