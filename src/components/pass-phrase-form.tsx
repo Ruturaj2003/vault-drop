@@ -11,6 +11,7 @@ import {
 } from "./ui/card";
 import { Button } from "./ui/button";
 import { LoadingSpinner } from "./loading-spinner";
+import ErrorPage from "./error";
 
 interface PassPhraseFormProps {
   setIsPhraseVerified: (val: boolean) => void;
@@ -27,17 +28,23 @@ export const PassPhraseForm = ({
 
   // Case Handling
   const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
-  const [hasFetched, setHasFetched] = useState(false);
+  const [isError, setIsError] = useState(true);
+
   const router = useRouter();
 
   const getUserPassPhrase = async (userId: string) => {
     // TODO: Replace with real DB/API call
     // TODO : Add Error here aswell
+
+    try {
+    } catch (error) {
+      console.log("This error has occured : " + error);
+      setIsError(true);
+    }
+
     const pass = userId;
     setPassPhrase(pass);
     setIsLoading(false);
-    setHasFetched(true);
   };
   // Fetch passphrase (mocked using userId for now)
   useEffect(() => {
@@ -58,7 +65,7 @@ export const PassPhraseForm = ({
   }
 
   if (isError) {
-    return <h1>Something went wrong </h1>;
+    return <ErrorPage />;
   }
   const verifyPassword = () => {
     if (userPhrase === passPhrase) {
@@ -70,7 +77,7 @@ export const PassPhraseForm = ({
 
   return (
     <div>
-      {hasFetched === true && passPhrase !== null ? (
+      {passPhrase !== null ? (
         <>
           <VerifyPassCard
             userPhrase={userPhrase}
@@ -80,7 +87,7 @@ export const PassPhraseForm = ({
           ></VerifyPassCard>
         </>
       ) : (
-        <>generate Pass caord compeont</>
+        <GeneratePassCard userId={userId}></GeneratePassCard>
       )}
     </div>
   );
@@ -99,6 +106,11 @@ const VerifyPassCard = ({
   passwordTriesLeft,
   verifyPassword,
 }: VerifyPassCardProps) => {
+  // Features
+  /*
+1. Add session
+*/
+
   return (
     <div className="flex items-start mt-32 justify-center min-h-screen px-4">
       <Card className="w-full max-w-md shadow-xl border rounded-2xl">
@@ -134,5 +146,26 @@ const VerifyPassCard = ({
         </CardFooter>
       </Card>
     </div>
+  );
+};
+
+interface GeneratePassCardProps {
+  userId: string;
+}
+const GeneratePassCard = ({ userId }: GeneratePassCardProps) => {
+  // Api Call to Generate The pass Phrase
+  // Features
+  /*
+  1. User Enter Pass Phrase 
+  2. Check for no blank space at end or start , if there , 
+  below write that blank space at the end and start will not be considerd
+  3. Check if Some Libray can generate some catch phrase , typically of 2 words
+   
+  */
+
+  return (
+    <>
+      <h1>This is to generate Pass Phrase</h1>
+    </>
   );
 };
