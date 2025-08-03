@@ -44,7 +44,10 @@ export const PassPhraseForm = ({
   return (
     <>
       {user !== null ? (
-        <VerifyPassPhraseCard />
+        <VerifyPassPhraseCard
+          setIsPhraseVerified={setIsPhraseVerified}
+          user={user}
+        />
       ) : (
         <GeneratePassPhraseCard userId={userId} />
       )}

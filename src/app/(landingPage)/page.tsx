@@ -15,6 +15,7 @@ export default function Home() {
       <SignedIn>
         <h1>Your User Id is :{user.userId} </h1>
         <Link href={"/upload"}>Go to Upload</Link>
+        <Link href={"/files"}>Go to Files</Link>
       </SignedIn>
 
       <LoadingSpinner></LoadingSpinner>
