@@ -33,10 +33,8 @@ export const PassPhraseForm = ({
 
 
 */
-  console.log(userId);
 
   const user = useQuery(api.userData.getUserData, { userId });
-  console.log(userId);
 
   // Loading
   if (user === undefined) {
