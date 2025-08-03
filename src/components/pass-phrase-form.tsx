@@ -33,8 +33,10 @@ export const PassPhraseForm = ({
 
 
 */
+  console.log(userId);
 
   const user = useQuery(api.userData.getUserData, { userId });
+  console.log(userId);
 
   // Loading
   if (user === undefined) {
@@ -42,6 +44,12 @@ export const PassPhraseForm = ({
   }
 
   return (
-    <>{user !== null ? <VerifyPassPhraseCard /> : <GeneratePassPhraseCard />}</>
+    <>
+      {user !== null ? (
+        <VerifyPassPhraseCard />
+      ) : (
+        <GeneratePassPhraseCard userId={userId} />
+      )}
+    </>
   );
 };

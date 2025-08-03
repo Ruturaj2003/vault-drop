@@ -4,7 +4,7 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Navbar } from "./(landingPage)/navbar";
 import { ConvexClientProvider } from "./ConvexClientProvider";
-
+import { Toaster } from "@/components/ui/sonner";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -33,6 +33,7 @@ export default function RootLayout({
         >
           <Navbar />
           <ConvexClientProvider>{children}</ConvexClientProvider>
+          <Toaster richColors position="top-center" />
         </body>
       </html>
     </ClerkProvider>

@@ -7,6 +7,8 @@ import { useState } from "react";
 const UploadPage = () => {
   const [isPhraseVerified, setIsPhraseVerified] = useState(false);
   const user = useAuth();
+  console.log(user.userId);
+
   return (
     <>
       {isPhraseVerified ? (
@@ -16,7 +18,7 @@ const UploadPage = () => {
       ) : (
         <>
           <PassPhraseForm
-            userId={user.userId!} //TODO :Add real ID
+            userId={user.userId!}
             setIsPhraseVerified={setIsPhraseVerified}
           ></PassPhraseForm>
         </>
