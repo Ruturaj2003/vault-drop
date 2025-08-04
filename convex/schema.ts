@@ -5,7 +5,7 @@ export default defineSchema({
   userData: defineTable({
     id: v.string(),
     passPhrase: v.optional(v.string()),
-    fileUrls: v.optional(
+    filesData: v.optional(
       v.array(
         v.object({
           id: v.string(), // or use v.string() if not referencing a document

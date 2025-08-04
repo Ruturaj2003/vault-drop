@@ -85,7 +85,7 @@ export const GeneratePassPhraseCard = ({
         <Button
           disabled={isLoading}
           onClick={generatePassPhrase}
-          className="bg-green-600 hover:bg-green-700 text-white"
+          variant="outline"
         >
           {isLoading ? "Loading..." : "Generate Pass Phrase"}
         </Button>
@@ -95,7 +95,9 @@ export const GeneratePassPhraseCard = ({
         <Button
           onClick={handleSubmit}
           disabled={isLoading}
-          className="flex-1"
+          className="flex-1 
+          hover:text-white
+          bg-green-600 hover:bg-green-700 text-white"
           variant="outline"
         >
           {isLoading ? "Saving..." : "Submit"}
