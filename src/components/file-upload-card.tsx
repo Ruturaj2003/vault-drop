@@ -1,5 +1,5 @@
 "use client";
-import { UploadFileButton, UploadFileDropzone } from "@/utils/uploadthing";
+import { UploadFileDropzone } from "@/utils/uploadthing";
 import {
   Card,
   CardAction,
@@ -141,7 +141,7 @@ export const FileUploadCard = () => {
                 <div>
                   <Button
                     onClick={() => {
-                      setRealFileUrl(null);
+                      setDummyFileUrl(null);
                       setDummyFileName(null);
                     }}
                     variant={"destructive"}
