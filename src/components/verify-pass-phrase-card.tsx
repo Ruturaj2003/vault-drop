@@ -28,70 +28,63 @@ export const VerifyPassPhraseCard = ({
   setIsPhraseVerified,
 }: VerifyPassCardProps) => {
   const passPhrase = user.passPhrase;
-  const [userPhrase, setUserPhrase] = useState<string>("");
-  const [passwordTriesLeft, setPasswordTriesLeft] = useState<number>(4);
+  const [userPhrase, setUserPhrase] = useState("");
+  const [passwordTriesLeft, setPasswordTriesLeft] = useState(4);
 
   const { signOut } = useClerk();
 
   const verifyPassword = () => {
     if (passPhrase === userPhrase.trim()) {
-      toast.success("Pass Phrase Verified");
+      toast.success("Pass phrase verified");
       setIsPhraseVerified(true);
     } else {
       setPasswordTriesLeft((prev) => prev - 1);
-      toast.error("Try again");
+      toast.error("Incorrect phrase");
     }
   };
 
   useEffect(() => {
-    const handleSignOut = async () => {
-      await signOut({ redirectUrl: "/" });
-    };
     if (passwordTriesLeft === 0) {
-      handleSignOut();
+      // Auto sign-out after too many failed attempts
+      signOut({ redirectUrl: "/" });
     }
   }, [passwordTriesLeft, signOut]);
 
   return (
-    <>
-      <div className="flex items-start mt-32 justify-center min-h-screen px-4">
-        <Card className="w-full max-w-md shadow-xl border rounded-2xl">
-          <div className="p-6">
-            <CardTitle className="text-center text-2xl font-semibold mb-2">
-              Verify Your Pass Phrase
-            </CardTitle>
-            <CardDescription className="text-center text-gray-500 mb-4">
-              Enter your pass phrase to proceed with uploading documents.
-            </CardDescription>
-          </div>
+    <div className="flex items-start mt-32 justify-center min-h-screen px-4">
+      <Card className="w-full max-w-md shadow-xl border rounded-2xl">
+        <div className="p-6">
+          <CardTitle className="text-center text-2xl font-semibold mb-2">
+            Verify Your Pass Phrase
+          </CardTitle>
+          <CardDescription className="text-center text-gray-500 mb-4">
+            Enter your pass phrase to continue
+          </CardDescription>
+        </div>
 
-          <CardContent className="flex flex-col gap-3 px-6">
-            <input
-              type="text"
-              value={userPhrase}
-              onChange={(e) => setUserPhrase(e.target.value)}
-              placeholder="Your Pass Phrase"
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-            />
+        <CardContent className="flex flex-col gap-3 px-6">
+          <input
+            type="text"
+            value={userPhrase}
+            onChange={(e) => setUserPhrase(e.target.value)}
+            placeholder="Your pass phrase"
+            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+            aria-label="Enter pass phrase"
+          />
 
-            {passwordTriesLeft < 4 && (
-              <p className="text-sm text-red-500">
-                {passwordTriesLeft} attempt{passwordTriesLeft !== 1 && "s"} left
-              </p>
-            )}
-          </CardContent>
+          {passwordTriesLeft < 4 && (
+            <p className="text-sm text-red-500">
+              {passwordTriesLeft} attempt{passwordTriesLeft !== 1 && "s"} left
+            </p>
+          )}
+        </CardContent>
 
-          <CardFooter className="px-6 pb-6">
-            <Button
-              onClick={verifyPassword}
-              className="w-full"
-              variant="default"
-            >
-              Verify
-            </Button>
-          </CardFooter>
-        </Card>
-      </div>
-    </>
+        <CardFooter className="px-6 pb-6">
+          <Button onClick={verifyPassword} className="w-full">
+            Verify
+          </Button>
+        </CardFooter>
+      </Card>
+    </div>
   );
 };
