@@ -1,5 +1,6 @@
 "use client";
 
+import { FileUploadCard } from "@/components/file-upload-card";
 import { PassPhraseForm } from "@/components/pass-phrase-form";
 import { useAuth } from "@clerk/nextjs";
 import { useState } from "react";
@@ -13,7 +14,7 @@ const UploadPage = () => {
     <>
       {isPhraseVerified ? (
         <>
-          <h1>This is the Form Upload element </h1>
+          <FileUploadCard></FileUploadCard>
         </>
       ) : (
         <>
