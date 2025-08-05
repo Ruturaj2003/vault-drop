@@ -1,7 +1,6 @@
 import {
   Card,
   CardAction,
-  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
@@ -23,33 +22,34 @@ interface FileCardProps {
 }
 
 export const FileCard = ({ fileData }: FileCardProps) => {
-  const seconds = fileData.uploadedAt;
-  const date = new Date(seconds * 1000); // convert to milliseconds
-  const formatted = date.toLocaleDateString("en-GB", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
+  const timeConverter = (time: number) => {
+    const seconds = time;
+    const date = new Date(seconds * 1000); // convert to milliseconds
+    const formatted = date.toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+
+    return formatted;
+  };
   return (
     <>
       <Card>
         <CardHeader>
           <CardTitle>{fileData.fileName}</CardTitle>
           <CardDescription>
-            Last Viewed at : {fileData.lastViewedAt}
+            Last Viewed at : {timeConverter(fileData.lastViewedAt!)}
           </CardDescription>
           <CardAction>
             <MoreVerticalIcon></MoreVerticalIcon>
           </CardAction>
         </CardHeader>
-        <CardContent>
-          <p>{fileData.fileName}</p>
-        </CardContent>
+
         <CardFooter>
           <Button variant={"outline"} className="flex-1">
             Open
           </Button>
-          {formatted}
         </CardFooter>
       </Card>
     </>
