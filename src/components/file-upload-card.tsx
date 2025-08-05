@@ -1,182 +1,163 @@
 "use client";
-import { UploadFileDropzone } from "@/utils/uploadthing";
-import {
-  Card,
-  CardAction,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "./ui/button";
+
 import { useState } from "react";
-import { toast } from "sonner";
 import { useMutation } from "convex/react";
-import { api } from "../../convex/_generated/api";
 import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+
+import { UploadFileDropzone } from "@/utils/uploadthing";
+import { api } from "../../convex/_generated/api";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+
 export const FileUploadCard = () => {
-  // Thought
-  /*
-1. check if both the url are there ,ie check for both file uploaded 
-2. File Name Input for the real File
-3. Meta Data for the file (BASIC Only for time being)
-4. Submit the File Urls 
-
-* Style properly 
-* add sonner
-
-
-
-*/
-
+  const [fileName, setFileName] = useState("");
   const [realFileName, setRealFileName] = useState<string | null>(null);
   const [dummyFileName, setDummyFileName] = useState<string | null>(null);
   const [realFileUrl, setRealFileUrl] = useState<string | null>(null);
   const [dummyFileUrl, setDummyFileUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [fileName, setFileName] = useState("");
-  const [] = useState("");
 
   const user = useAuth();
-  const uploadFileData = useMutation(api.userData.uploadFileData);
   const router = useRouter();
+  const uploadFileData = useMutation(api.userData.uploadFileData);
+
   const handleSubmit = async () => {
     setIsLoading(true);
-    if (fileName.trim() === "") {
-      toast.error("Please Please Write the filename");
+
+    if (!fileName.trim()) {
+      toast.error("Please enter a file name.");
       setIsLoading(false);
       return;
     }
-    if (realFileUrl === null || dummyFileUrl === null) {
-      toast.error("Please Upload Both the Files");
+
+    if (!realFileUrl || !dummyFileUrl) {
+      toast.error("Please upload both files.");
       setIsLoading(false);
       return;
     }
 
     try {
-      const timeNow = Date.now() / 100;
-      const res = await uploadFileData({
+      const timestamp = Date.now() / 100;
+
+      await uploadFileData({
         userId: user.userId!,
-        dummyFileUrl: dummyFileUrl!,
         fileName: fileName.trim(),
-        realFileUrl: realFileUrl!,
-        uploadedAt: timeNow,
-        lastViewedAt: timeNow,
+        realFileUrl,
+        dummyFileUrl,
+        uploadedAt: timestamp,
+        lastViewedAt: timestamp,
         totalTimeViewed: 0,
       });
-      console.log(res);
-      toast.success("File Updated Successfully");
+
+      toast.success("File uploaded successfully.");
       router.push("/files");
-    } catch (error) {
-      console.log("ERROR from FileUpload :" + error);
-      toast.error("Something Went Wrong try again");
+    } catch (err) {
+      console.error("Upload error:", err);
+      toast.error("Upload failed. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
 
-  /*
-      userId: v.string(),
-      fileName: v.string(), // real visible name
-      realFileUrl: v.string(),
-      dummyFileUrl: v.string(),
-      uploadedAt: v.number(), // Date.now()
-      lastViewedAt: v.optional(v.number()),
-      totalTimeViewed: v.optional(v.number()), // in s
-  */
-
   return (
-    <div className="flex justify-center items-center">
-      <Card>
+    <div className="flex  justify-center mx-auto   items-center   px-4">
+      <Card className="w-full max-w-3xl  overflow-y-auto p-6 rounded-xl shadow-md bg-white">
         <CardHeader>
-          <CardTitle>Upload Your Files</CardTitle>
+          <CardTitle className="text-xl">Upload Your Files</CardTitle>
           <CardDescription>
-            Carefully upload a dummy file and your real file
+            Upload both your real and dummy files with a proper display name.
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <main className="flex min-h-screen flex-col items-center justify-between p-24">
-            <input
-              type="text"
+
+        <CardContent className="space-y-2">
+          <div className="space-y-2">
+            <label className="text-sm font-medium">File Display Name</label>
+            <Input
+              placeholder="Enter display name"
               value={fileName}
               onChange={(e) => setFileName(e.target.value)}
-              placeholder="File name for your file"
             />
-            <h1>Real FIle</h1>
-            {realFileUrl ? (
-              <>
-                <div>
-                  <Button
-                    onClick={() => {
-                      setRealFileUrl(null);
-                      setRealFileName(null);
-                    }}
-                    variant={"destructive"}
-                  >
-                    Change The Real File{realFileName}
-                  </Button>
-                </div>
-              </>
-            ) : (
-              <UploadFileDropzone
-                endpoint="fileUploader"
-                onClientUploadComplete={(res) => {
-                  // Do something with the response
-                  console.log("Real Files: ", res);
-                  toast.success("Real File Set");
-                  setRealFileUrl(res[0].ufsUrl);
-                  setRealFileName(res[0].name);
-                }}
-                onUploadError={(error: Error) => {
-                  // Do something with the error.
-                  toast.error(`ERROR! ${error.message}`);
-                }}
-              ></UploadFileDropzone>
-            )}
-            <h1>Dummy file : </h1>
-            {dummyFileUrl ? (
-              <>
-                <div>
-                  <Button
-                    onClick={() => {
-                      setDummyFileUrl(null);
-                      setDummyFileName(null);
-                    }}
-                    variant={"destructive"}
-                  >
-                    Change The Dummy File{dummyFileName}
-                  </Button>
-                </div>
-              </>
-            ) : (
-              <>
+          </div>
+          <div className="flex justify-around items-center">
+            {/* Real File Upload */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Real File</label>
+              {realFileUrl ? (
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={() => {
+                    setRealFileUrl(null);
+                    setRealFileName(null);
+                  }}
+                >
+                  Change Real File ({realFileName})
+                </Button>
+              ) : (
                 <UploadFileDropzone
+                  className="h-[200px] size-52"
                   endpoint="fileUploader"
                   onClientUploadComplete={(res) => {
-                    // Do something with the response
-                    console.log("Dummy  Files: ", res);
-                    toast.success("Dummy File Set");
+                    toast.success("Real file uploaded.");
+                    setRealFileUrl(res[0].ufsUrl);
+                    setRealFileName(res[0].name);
+                  }}
+                  onUploadError={(err: Error) => {
+                    toast.error(`Upload failed: ${err.message}`);
+                  }}
+                />
+              )}
+            </div>
+
+            {/* Dummy File Upload */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Dummy File</label>
+              {dummyFileUrl ? (
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={() => {
+                    setDummyFileUrl(null);
+                    setDummyFileName(null);
+                  }}
+                >
+                  Change Dummy File ({dummyFileName})
+                </Button>
+              ) : (
+                <UploadFileDropzone
+                  className="h-[200px] size-52"
+                  endpoint="fileUploader"
+                  onClientUploadComplete={(res) => {
+                    toast.success("Dummy file uploaded.");
                     setDummyFileUrl(res[0].ufsUrl);
                     setDummyFileName(res[0].name);
                   }}
-                  onUploadError={(error: Error) => {
-                    // Do something with the error.
-                    toast.error(`ERROR! ${error.message}`);
+                  onUploadError={(err: Error) => {
+                    toast.error(`Upload failed: ${err.message}`);
                   }}
-                ></UploadFileDropzone>
-              </>
-            )}
-          </main>
+                />
+              )}
+            </div>
+          </div>
         </CardContent>
+
         <CardFooter>
           <Button
             onClick={handleSubmit}
             disabled={isLoading}
-            className="flex-1 flex"
+            className="w-full"
           >
-            {isLoading ? "Please Wait" : "Upload Data"}
+            {isLoading ? "Uploading..." : "Submit"}
           </Button>
         </CardFooter>
       </Card>
