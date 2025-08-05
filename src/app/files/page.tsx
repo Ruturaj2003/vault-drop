@@ -3,28 +3,35 @@
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { useAuth } from "@clerk/nextjs";
+import { FileCard } from "@/components/file-card";
 
 const FilesPage = () => {
-  const clerkUser = useAuth();
+  const { userId } = useAuth();
   const fileData = useQuery(api.userData.getFiles, {
-    userId: clerkUser.userId!,
+    userId: userId!,
   });
 
   return (
-    <>
-      {fileData?.length === 0 ? (
-        <>
-          <h1>No files Uploaded</h1>
-        </>
-      ) : (
-        <>
-          THere are your files
-          {fileData?.map((file) => {
-            return <h2 key={file.id}>{file.fileName}</h2>;
-          })}
-        </>
-      )}
-    </>
+    <div className="min-h-screen bg-gray-100 px-6 py-10">
+      <div className="max-w-5xl mx-auto">
+        {fileData?.length === 0 ? (
+          <div className="text-center text-gray-600 text-lg">
+            No files uploaded yet.
+          </div>
+        ) : (
+          <>
+            <h1 className="text-2xl font-semibold mb-6 text-gray-800">
+              Your Files
+            </h1>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              {fileData?.map((file) => (
+                <FileCard fileData={file} key={file.id}></FileCard>
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+    </div>
   );
 };
 

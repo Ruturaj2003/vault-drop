@@ -47,7 +47,7 @@ export const FileUploadCard = () => {
     }
 
     try {
-      const timestamp = Date.now() / 100;
+      const timestamp = Math.floor(Date.now() / 1000);
 
       await uploadFileData({
         userId: user.userId!,
@@ -93,16 +93,19 @@ export const FileUploadCard = () => {
             <div className="space-y-2">
               <label className="text-sm font-medium">Real File</label>
               {realFileUrl ? (
-                <Button
-                  variant="destructive"
-                  size="sm"
-                  onClick={() => {
-                    setRealFileUrl(null);
-                    setRealFileName(null);
-                  }}
-                >
-                  Change Real File ({realFileName})
-                </Button>
+                <div className="size-55 p-2 flex flex-col gap-y-2 justify-center rounded-lg items-center border border-dashed border-gray-400">
+                  <h1 className="text-md">{realFileName}</h1>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => {
+                      setRealFileUrl(null);
+                      setRealFileName(null);
+                    }}
+                  >
+                    Change Real File
+                  </Button>
+                </div>
               ) : (
                 <UploadFileDropzone
                   className="h-[200px] size-52"
@@ -123,16 +126,19 @@ export const FileUploadCard = () => {
             <div className="space-y-2">
               <label className="text-sm font-medium">Dummy File</label>
               {dummyFileUrl ? (
-                <Button
-                  variant="destructive"
-                  size="sm"
-                  onClick={() => {
-                    setDummyFileUrl(null);
-                    setDummyFileName(null);
-                  }}
-                >
-                  Change Dummy File ({dummyFileName})
-                </Button>
+                <div className="size-55 p-2 flex flex-col gap-y-2 justify-center rounded-lg items-center border border-dashed border-gray-400">
+                  <h1 className="text-md">{dummyFileName}</h1>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => {
+                      setDummyFileUrl(null);
+                      setDummyFileName(null);
+                    }}
+                  >
+                    Change Dummy File
+                  </Button>
+                </div>
               ) : (
                 <UploadFileDropzone
                   className="h-[200px] size-52"
