@@ -4,12 +4,26 @@ import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { useAuth } from "@clerk/nextjs";
 import { FileCard } from "@/components/file-card";
+import { useEffect, useState } from "react";
+import { LoadingSpinner } from "@/components/loading-spinner";
+import useFileDataStore from "@/store/fileDataStore";
 
 const FilesPage = () => {
   const { userId } = useAuth();
   const fileData = useQuery(api.userData.getFiles, {
     userId: userId!,
   });
+
+  const setFileData = useFileDataStore((state) => state.setFileData);
+
+  useEffect(() => {
+    if (fileData && fileData.length > 0) {
+      setFileData(fileData);
+    }
+  }, [fileData, setFileData]);
+  if (fileData === undefined) {
+    return <LoadingSpinner></LoadingSpinner>;
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 px-6 py-10">

@@ -8,6 +8,9 @@ import {
 } from "@/components/ui/card";
 import { MoreVerticalIcon } from "lucide-react";
 import { Button } from "./ui/button";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import useFileDataStore from "@/store/fileDataStore";
 
 interface FileCardProps {
   fileData: {
@@ -22,6 +25,7 @@ interface FileCardProps {
 }
 
 export const FileCard = ({ fileData }: FileCardProps) => {
+  const route = useRouter();
   const timeConverter = (time: number) => {
     const seconds = time;
     const date = new Date(seconds * 1000); // convert to milliseconds
@@ -33,6 +37,15 @@ export const FileCard = ({ fileData }: FileCardProps) => {
 
     return formatted;
   };
+
+  const setCurrentFile = useFileDataStore((state) => state.setCurrentFile);
+
+  const handleClick = () => {
+    toast.info("Opening File " + fileData.fileName);
+    setCurrentFile(fileData.id);
+    route.push("/view/");
+  };
+
   return (
     <>
       <Card>
@@ -47,7 +60,7 @@ export const FileCard = ({ fileData }: FileCardProps) => {
         </CardHeader>
 
         <CardFooter>
-          <Button variant={"outline"} className="flex-1">
+          <Button onClick={handleClick} variant={"outline"} className="flex-1">
             Open
           </Button>
         </CardFooter>
