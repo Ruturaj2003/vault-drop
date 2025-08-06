@@ -1,6 +1,7 @@
 "use client";
 import { LoadingSpinner } from "@/components/loading-spinner";
 import useFileDataStore from "@/store/fileDataStore";
+import useMousePosition from "@/utils/useMousePosition";
 import { useEffect, useState } from "react";
 
 const ViewFilePage = () => {
@@ -14,7 +15,7 @@ const ViewFilePage = () => {
 
   const [realPdfData, setRealPdfData] = useState<string | null>(null);
   // API Call To get File
-
+  const { x, y } = useMousePosition();
   useEffect(() => {
     const file = getCurrentFile();
     setFileData(file);
@@ -39,7 +40,14 @@ const ViewFilePage = () => {
   if (isLoading) return <LoadingSpinner />;
   if (!fileData) return <p>No file selected.</p>;
 
-  return <h1>This is your File: {fileData.fileName}</h1>;
+  return (
+    <div className="flex flex-col gap-y4">
+      <h1 className="text-md ">This is your Mouse . </h1>
+      <h1 className="text-md ">
+        X:{x} y:{y}
+      </h1>
+    </div>
+  );
 };
 
 export default ViewFilePage;
