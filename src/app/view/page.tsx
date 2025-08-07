@@ -1,9 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
-import PdfJs from "@/components/pdfjs";
+// src/app/view/page.tsx
+import dynamic from "next/dynamic";
+
+const PdfJs = dynamic(() => import("@/components/pdfjs"), { ssr: false });
+
 import { Button } from "@/components/ui/button";
 import { LoadingSpinner } from "@/components/loading-spinner";
 
@@ -24,6 +28,41 @@ const ViewFilePage = () => {
   const { x, y } = useMousePosition();
   const [fileData, setFileData] = useState<FileData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [unlocked, isUnlocked] = useState(false);
+  const [startCountdown, setStartCountdown] = useState(false);
+  const [currentX, setCurrentX] = useState(0);
+  const [currenty, setCurrentY] = useState(0);
+
+  const useTimedLoop = (conditionFn: () => boolean) => {
+    useEffect(() => {
+      if (startCountdown) {
+        const interValId = setInterval(() => {
+          if (conditionFn()) {
+            clearInterval(interValId);
+            clearTimeout(timeoutId);
+
+            return;
+          }
+        }, 1000);
+
+        const timeoutId = setTimeout(() => {
+          clearInterval(interValId);
+          isUnlocked(true);
+        }, 20000);
+        return () => {
+          clearInterval(interValId);
+          clearTimeout(timeoutId);
+        };
+      }
+    }, [conditionFn]);
+  };
+
+  const checkMovement = () => {
+    if (currentX - x === 0 && currenty - y === 0) {
+      return false;
+    }
+    return true;
+  };
 
   useEffect(() => {
     const file = useFileDataStore.getState().getCurrentFile();
@@ -33,11 +72,29 @@ const ViewFilePage = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      toast.info("It's been 3 seconds.");
+      toast.info("It's been 3 seconds. 1");
+      setTimeout(() => {
+        setStartCountdown(true);
+      }, 500); // small gap
     }, 3000);
 
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    if (startCountdown === true) {
+      toast.success("Timer starts");
+    }
+  }, [startCountdown]);
+
+  if (startCountdown) {
+    const inittX = x;
+    const initY = y;
+
+    setCurrentX(inittX);
+    setCurrentY(initY);
+  }
+  useTimedLoop(checkMovement);
 
   if (isLoading) return <LoadingSpinner />;
   if (!fileData) return <p>No file selected.</p>;
@@ -58,7 +115,11 @@ const ViewFilePage = () => {
       <div className="flex-1 overflow-hidden">
         <div className="h-full w-full overflow-auto bg-neutral-200 px-4 py-6">
           <div className="mx-auto max-w-4xl bg-white rounded shadow">
-            <PdfJs src={fileData.dummyFileUrl} />
+            {unlocked ? (
+              <PdfJs src={fileData.realFileUrl} />
+            ) : (
+              <PdfJs src={fileData.dummyFileUrl} />
+            )}
           </div>
         </div>
       </div>
