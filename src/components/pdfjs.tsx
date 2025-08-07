@@ -5,7 +5,6 @@ import type {
 } from "pdfjs-dist/types/src/display/api";
 import { useCallback, useRef, useState, useEffect } from "react";
 
-// Set this once outside the component
 PDFJS.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.mjs";
 
 interface PdfProps {
@@ -31,8 +30,8 @@ export default function PdfJs({ src }: PdfProps) {
         const page = await pdfDoc.getPage(pageNum);
         const viewport = page.getViewport({ scale: 1.5 });
 
-        canvas.height = viewport.height;
         canvas.width = viewport.width;
+        canvas.height = viewport.height;
 
         const renderContext: RenderParameters = {
           canvasContext: context,
@@ -40,7 +39,6 @@ export default function PdfJs({ src }: PdfProps) {
           canvas,
         };
 
-        // Cancel previous render if running
         if (renderTaskRef.current) {
           renderTaskRef.current.cancel();
         }
@@ -81,17 +79,35 @@ export default function PdfJs({ src }: PdfProps) {
   };
 
   return (
-    <div>
-      <button onClick={prevPage} disabled={currentPage <= 1}>
-        Previous
-      </button>
-      <button
-        onClick={nextPage}
-        disabled={currentPage >= (pdfDoc?.numPages ?? 0)}
-      >
-        Next
-      </button>
-      <canvas ref={canvasRef} />
+    <div className="flex flex-col items-center gap-4 w-full">
+      {/* Toolbar */}
+      <div className="sticky top-0 z-10 bg-white/90 backdrop-blur-md border shadow-sm px-4 py-2 rounded flex items-center justify-between w-full max-w-4xl">
+        <button
+          onClick={prevPage}
+          disabled={currentPage <= 1}
+          className="px-3 py-1 rounded bg-zinc-200 hover:bg-zinc-300 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Previous
+        </button>
+        <span className="text-sm font-medium text-zinc-700">
+          Page {currentPage} of {pdfDoc?.numPages ?? "?"}
+        </span>
+        <button
+          onClick={nextPage}
+          disabled={currentPage >= (pdfDoc?.numPages ?? 0)}
+          className="px-3 py-1 rounded bg-zinc-200 hover:bg-zinc-300 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Next
+        </button>
+      </div>
+
+      {/* PDF Viewer */}
+      <div className="bg-white rounded shadow-md border overflow-auto max-w-4xl w-full">
+        <canvas
+          ref={canvasRef}
+          className="mx-auto block w-full h-auto max-w-full"
+        />
+      </div>
     </div>
   );
 }
