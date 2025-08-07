@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import useFileDataStore from "@/store/fileDataStore";
 import useMousePosition from "@/utils/useMousePosition";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 // If the timer stuff is making issue , do big brain , make one more  elenebt and use && operator to set render when Key activated ie no movemnt
 
@@ -15,6 +16,16 @@ const ViewFilePage = () => {
 
   const [fileData, setFileData] = useState(() => getCurrentFile());
   const [isLoading, setIsLoading] = useState(true);
+  const [unlocked, setUnlocked] = useState(false);
+
+  // // Run Only once when  mounted
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     return toast.info("Its 3seconds now");
+  //   });
+
+  //   return () => clearTimeout(timer);
+  // }, []);
 
   useEffect(() => {
     const file = getCurrentFile();

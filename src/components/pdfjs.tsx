@@ -5,6 +5,7 @@ import type {
 } from "pdfjs-dist/types/src/display/api";
 import { useCallback, useRef, useState, useEffect } from "react";
 import { Button } from "./ui/button";
+import { LoadingSpinner } from "@/components/loading-spinner";
 
 PDFJS.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.mjs";
 
@@ -18,10 +19,25 @@ export default function PdfJs({ src }: PdfProps) {
 
   const [pdfDoc, setPdfDoc] = useState<PDFDocumentProxy>();
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true); // for both load + render
 
   const renderPage = useCallback(
     async (pageNum: number) => {
       if (!pdfDoc || !canvasRef.current) return;
+
+      setLoading(true);
+
+      // Cancel any ongoing render task
+      if (renderTaskRef.current) {
+        try {
+          await renderTaskRef.current.cancel();
+        } catch (e: unknown) {
+          if (e instanceof Error) {
+            console.warn("Render task cancel warning:", e.message);
+          }
+        }
+        renderTaskRef.current = null;
+      }
 
       const canvas = canvasRef.current;
       const context = canvas.getContext("2d");
@@ -40,32 +56,42 @@ export default function PdfJs({ src }: PdfProps) {
           canvas,
         };
 
-        if (renderTaskRef.current) {
-          renderTaskRef.current.cancel();
-        }
-
         const task = page.render(renderContext);
         renderTaskRef.current = task;
 
         await task.promise;
-      } catch (err) {
-        console.error("Render error:", err);
+      } catch (err: unknown) {
+        if (
+          err instanceof Error &&
+          err.name !== "RenderingCancelledException"
+        ) {
+          console.error("Render error:", err.message);
+        }
+      } finally {
+        setLoading(false);
       }
     },
     [pdfDoc]
   );
 
   useEffect(() => {
-    if (pdfDoc) renderPage(currentPage);
-  }, [pdfDoc, currentPage, renderPage]);
-
-  useEffect(() => {
+    setLoading(true);
     const loadingTask = PDFJS.getDocument(src);
     loadingTask.promise.then(
-      (loadedDoc) => setPdfDoc(loadedDoc),
-      (err) => console.error("PDF load error:", err)
+      (loadedDoc) => {
+        setPdfDoc(loadedDoc);
+        setLoading(false);
+      },
+      (err) => {
+        console.error("PDF load error:", err);
+        setLoading(false);
+      }
     );
   }, [src]);
+
+  useEffect(() => {
+    if (pdfDoc) renderPage(currentPage);
+  }, [pdfDoc, currentPage, renderPage]);
 
   const nextPage = () => {
     if (pdfDoc && currentPage < pdfDoc.numPages) {
@@ -105,11 +131,15 @@ export default function PdfJs({ src }: PdfProps) {
       </div>
 
       {/* PDF Viewer */}
-      <div className="bg-white rounded shadow-md border overflow-auto max-w-4xl w-full">
-        <canvas
-          ref={canvasRef}
-          className="mx-auto block w-full h-auto max-w-full"
-        />
+      <div className="bg-white rounded shadow-md border overflow-auto max-w-4xl w-full min-h-[300px] flex items-center justify-center">
+        {loading ? (
+          <LoadingSpinner />
+        ) : (
+          <canvas
+            ref={canvasRef}
+            className="mx-auto block w-full h-auto max-w-full"
+          />
+        )}
       </div>
     </div>
   );
