@@ -4,6 +4,7 @@ import type {
   RenderParameters,
 } from "pdfjs-dist/types/src/display/api";
 import { useCallback, useRef, useState, useEffect } from "react";
+import { Button } from "./ui/button";
 
 PDFJS.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.mjs";
 
@@ -82,23 +83,25 @@ export default function PdfJs({ src }: PdfProps) {
     <div className="flex flex-col items-center gap-4 w-full">
       {/* Toolbar */}
       <div className="sticky top-0 z-10 bg-white/90 backdrop-blur-md border shadow-sm px-4 py-2 rounded flex items-center justify-between w-full max-w-4xl">
-        <button
+        <Button
           onClick={prevPage}
           disabled={currentPage <= 1}
-          className="px-3 py-1 rounded bg-zinc-200 hover:bg-zinc-300 disabled:opacity-50 disabled:cursor-not-allowed"
+          variant="secondary"
         >
           Previous
-        </button>
+        </Button>
+
         <span className="text-sm font-medium text-zinc-700">
           Page {currentPage} of {pdfDoc?.numPages ?? "?"}
         </span>
-        <button
+
+        <Button
           onClick={nextPage}
           disabled={currentPage >= (pdfDoc?.numPages ?? 0)}
-          className="px-3 py-1 rounded bg-zinc-200 hover:bg-zinc-300 disabled:opacity-50 disabled:cursor-not-allowed"
+          variant="secondary"
         >
           Next
-        </button>
+        </Button>
       </div>
 
       {/* PDF Viewer */}

@@ -2,6 +2,7 @@
 
 import { LoadingSpinner } from "@/components/loading-spinner";
 import PdfJs from "@/components/pdfjs";
+import { Button } from "@/components/ui/button";
 import useFileDataStore from "@/store/fileDataStore";
 import useMousePosition from "@/utils/useMousePosition";
 import { useEffect, useState } from "react";
@@ -33,12 +34,9 @@ const ViewFilePage = () => {
           x:{x} y:{y}
         </div>
         <div className="flex items-center gap-2">
-          <button
-            onClick={() => window.history.back()}
-            className="px-3 py-1 text-sm rounded bg-zinc-200 hover:bg-zinc-300 transition"
-          >
+          <Button variant={"outline"} onClick={() => window.history.back()}>
             Back
-          </button>
+          </Button>
         </div>
       </div>
 
