@@ -76,7 +76,8 @@ export default function PdfJs({ src }: PdfProps) {
 
   useEffect(() => {
     setLoading(true);
-    const loadingTask = PDFJS.getDocument(src);
+    const loadingTask = PDFJS.getDocument({ url: src, disableStream: true });
+
     loadingTask.promise.then(
       (loadedDoc) => {
         setPdfDoc(loadedDoc);
