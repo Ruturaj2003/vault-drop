@@ -32,62 +32,87 @@ const ViewFilePage = () => {
   const delayTimer = useRef<NodeJS.Timeout | null>(null);
   const unlockTimer = useRef<NodeJS.Timeout | null>(null);
   const timerStarted = useRef(false);
+
+  // Load file data
   useEffect(() => {
     const file = useFileDataStore.getState().getCurrentFile();
     setFileData(file);
     setIsLoading(false);
   }, []);
 
-  // Main logic by gpt - Quite a Lot better than my thought and very simple also and does not need exxtra stuff that i put eie check mouse position
-  useEffect(() => {
-    if (!fileData) return;
-
-    // Wait 5 secs or X amt of time
-    delayTimer.current = setTimeout(() => {
-      console.log(" [Aplha] : Mointioring Started... ");
-      toast.info("[Aplha] : Mointioring Started... ");
-      timerStarted.current = true;
-      // For the line below i tried atleast 5 hrs using states and fancy techniques , multiple intervals and what not
-      window.addEventListener("mousemove", handleActivity);
-      window.addEventListener("scroll", handleActivity);
-
-      // Start  3 min Unlock Timer
-      unlockTimer.current = setTimeout(() => {
-        if (!activityDetected.current) {
-          console.log("[Charlie] : Unlocked - No Activity Detected");
-          window.removeEventListener("mousemove", handleActivity);
-          window.removeEventListener("scroll", handleActivity);
-          setUnlocked(true);
-        }
-        toast.info("[Charlie] : Unlocked - No Activity Detected");
-      }, 15 * 1000);
-    }, 5000);
-
-    // Clean up
-    return () => {
-      if (delayTimer.current) clearTimeout(delayTimer.current);
-      if (unlockTimer.current) clearTimeout(unlockTimer.current);
-      window.removeEventListener("mousemove", handleActivity);
-      window.removeEventListener("scroll", handleActivity);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fileData]);
-
-  // Actitvy Handler
+  // Unified activity handler
   const handleActivity = () => {
     if (!activityDetected.current && !unlocked) {
-      console.log("[Delta] : Actibity Detected , Lock Stays");
-      toast.info("[Delta] : Actibity Detected , Lock Stays");
       activityDetected.current = true;
+      console.log("[Activity] User interaction detected — keeping locked file");
+      toast.info("User activity detected — dummy file stays visible");
       if (unlockTimer.current) clearTimeout(unlockTimer.current);
     }
   };
 
+  // Monitor after delay
+  useEffect(() => {
+    if (!fileData) return;
+
+    delayTimer.current = setTimeout(() => {
+      console.log("[Monitor] Activity monitoring started");
+      toast.info("Monitoring for user activity...");
+
+      timerStarted.current = true;
+
+      const events = [
+        "mousemove",
+        "scroll",
+        "mousedown",
+        "mouseup",
+        "keydown",
+        "touchstart",
+        "wheel",
+      ];
+
+      events.forEach((event) =>
+        window.addEventListener(event, handleActivity, { passive: true })
+      );
+
+      // Unlock after inactivity
+      unlockTimer.current = setTimeout(
+        () => {
+          if (!activityDetected.current) {
+            console.log("[Unlock] No activity detected — showing real file");
+            toast.success("Unlocked — no activity detected");
+            setUnlocked(true);
+          }
+          events.forEach((event) =>
+            window.removeEventListener(event, handleActivity)
+          );
+        },
+        3 * 60 * 1000
+      ); // 3 minutes
+    }, 5000); // 5-second delay before starting monitoring
+
+    return () => {
+      if (delayTimer.current) clearTimeout(delayTimer.current);
+      if (unlockTimer.current) clearTimeout(unlockTimer.current);
+      const events = [
+        "mousemove",
+        "scroll",
+        "mousedown",
+        "mouseup",
+        "keydown",
+        "touchstart",
+        "wheel",
+      ];
+      events.forEach((event) =>
+        window.removeEventListener(event, handleActivity)
+      );
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fileData]);
+
+  // Iframe-specific activity
   const handleActivityIframe = () => {
-    if (!unlocked) {
-      if (timerStarted.current) {
-        handleActivity();
-      }
+    if (!unlocked && timerStarted.current) {
+      handleActivity();
     }
   };
 
@@ -98,8 +123,8 @@ const ViewFilePage = () => {
     <div className="h-screen w-screen bg-zinc-100 text-zinc-800 flex flex-col">
       {/* Top Toolbar */}
       <div className="flex items-center justify-between px-6 py-3 bg-white border-b shadow-sm z-10">
-        <div className="text-sm font-medium text-zinc-700">
-          Viewing: {fileData.fileName} &nbsp; x:{x} y:{y}
+        <div className="text-sm font-medium text-zinc-700 truncate">
+          Viewing: {fileData.fileName} &nbsp; | x:{x} y:{y}
         </div>
         <Button variant="outline" onClick={() => window.history.back()}>
           Back
@@ -108,16 +133,16 @@ const ViewFilePage = () => {
 
       {/* PDF Viewer Section */}
       <div className="flex-1 overflow-hidden">
-        <div className="h-full w-full overflow-auto bg-neutral-200 px-4 py-6">
-          <div className="mx-auto max-w-4xl bg-white rounded shadow">
+        <div className="h-full w-full bg-neutral-200 px-4 py-6">
+          <div className="mx-auto max-w-5xl bg-white rounded-lg shadow overflow-hidden h-full">
             <iframe
               src={unlocked ? fileData.realFileUrl : fileData.dummyFileUrl}
               onScroll={handleActivityIframe}
               onMouseMove={handleActivityIframe}
-            ></iframe>
-            {/* <PdfJs
-              src={unlocked ? fileData.realFileUrl : fileData.dummyFileUrl}
-            /> */}
+              onLoad={() => console.log("[Iframe] PDF loaded")}
+              className="w-full h-full border-0"
+              title="PDF Viewer"
+            />
           </div>
         </div>
       </div>
