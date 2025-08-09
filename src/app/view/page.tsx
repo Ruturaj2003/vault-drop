@@ -31,7 +31,7 @@ const ViewFilePage = () => {
   const activityDetected = useRef(false);
   const delayTimer = useRef<NodeJS.Timeout | null>(null);
   const unlockTimer = useRef<NodeJS.Timeout | null>(null);
-
+  const timerStarted = useRef(false);
   useEffect(() => {
     const file = useFileDataStore.getState().getCurrentFile();
     setFileData(file);
@@ -46,6 +46,7 @@ const ViewFilePage = () => {
     delayTimer.current = setTimeout(() => {
       console.log(" [Aplha] : Mointioring Started... ");
       toast.info("[Aplha] : Mointioring Started... ");
+      timerStarted.current = true;
       // For the line below i tried atleast 5 hrs using states and fancy techniques , multiple intervals and what not
       window.addEventListener("mousemove", handleActivity);
 
@@ -98,9 +99,19 @@ const ViewFilePage = () => {
       <div className="flex-1 overflow-hidden">
         <div className="h-full w-full overflow-auto bg-neutral-200 px-4 py-6">
           <div className="mx-auto max-w-4xl bg-white rounded shadow">
-            <PdfJs
+            <iframe
               src={unlocked ? fileData.realFileUrl : fileData.dummyFileUrl}
-            />
+              onMouseMove={() => {
+                if (!unlocked) {
+                  if (timerStarted.current) {
+                    handleActivity();
+                  }
+                }
+              }}
+            ></iframe>
+            {/* <PdfJs
+              src={unlocked ? fileData.realFileUrl : fileData.dummyFileUrl}
+            /> */}
           </div>
         </div>
       </div>
