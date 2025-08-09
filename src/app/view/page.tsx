@@ -49,12 +49,14 @@ const ViewFilePage = () => {
       timerStarted.current = true;
       // For the line below i tried atleast 5 hrs using states and fancy techniques , multiple intervals and what not
       window.addEventListener("mousemove", handleActivity);
+      window.addEventListener("scroll", handleActivity);
 
       // Start  3 min Unlock Timer
       unlockTimer.current = setTimeout(() => {
         if (!activityDetected.current) {
           console.log("[Charlie] : Unlocked - No Activity Detected");
           window.removeEventListener("mousemove", handleActivity);
+          window.removeEventListener("scroll", handleActivity);
           setUnlocked(true);
         }
         toast.info("[Charlie] : Unlocked - No Activity Detected");
@@ -66,6 +68,7 @@ const ViewFilePage = () => {
       if (delayTimer.current) clearTimeout(delayTimer.current);
       if (unlockTimer.current) clearTimeout(unlockTimer.current);
       window.removeEventListener("mousemove", handleActivity);
+      window.removeEventListener("scroll", handleActivity);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fileData]);
@@ -77,6 +80,14 @@ const ViewFilePage = () => {
       toast.info("[Delta] : Actibity Detected , Lock Stays");
       activityDetected.current = true;
       if (unlockTimer.current) clearTimeout(unlockTimer.current);
+    }
+  };
+
+  const handleActivityIframe = () => {
+    if (!unlocked) {
+      if (timerStarted.current) {
+        handleActivity();
+      }
     }
   };
 
@@ -101,13 +112,8 @@ const ViewFilePage = () => {
           <div className="mx-auto max-w-4xl bg-white rounded shadow">
             <iframe
               src={unlocked ? fileData.realFileUrl : fileData.dummyFileUrl}
-              onMouseMove={() => {
-                if (!unlocked) {
-                  if (timerStarted.current) {
-                    handleActivity();
-                  }
-                }
-              }}
+              onScroll={handleActivityIframe}
+              onMouseMove={handleActivityIframe}
             ></iframe>
             {/* <PdfJs
               src={unlocked ? fileData.realFileUrl : fileData.dummyFileUrl}
