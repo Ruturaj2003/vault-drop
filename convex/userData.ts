@@ -91,7 +91,6 @@ export const updateFileTimeInfo = mutation({
     userId: v.string(),
     fileId: v.string(),
     lastViewedAt: v.optional(v.number()),
-    totalTimeViewed: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
     const user = await ctx.db
@@ -114,7 +113,6 @@ export const updateFileTimeInfo = mutation({
         const newObj = {
           ...fileObj,
           lastViewedAt: args.lastViewedAt ?? fileObj.lastViewedAt,
-          totalTimeViewed: args.totalTimeViewed ?? fileObj.totalTimeViewed,
         };
 
         return newObj;
@@ -146,5 +144,30 @@ export const getFiles = query({
       return [];
     }
     return user.filesData;
+  },
+});
+
+export const deleteFile = mutation({
+  args: { userId: v.string(), fileId: v.string() },
+  handler: async (ctx, args) => {
+    const user = await ctx.db
+      .query("userData")
+      .filter((user) => {
+        return user.eq(user.field("id"), args.userId);
+      })
+      .first();
+
+    if (user === null) {
+      throw new ConvexError("Unauthorized");
+    }
+    const existingFileData = user.filesData;
+    const newFilesData = existingFileData?.filter(
+      (file) => file.id !== args.fileId
+    );
+
+    await ctx.db.patch(user._id, {
+      filesData: newFilesData,
+    });
+    return "Successfully Deleted File";
   },
 });

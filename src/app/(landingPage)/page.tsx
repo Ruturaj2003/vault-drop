@@ -1,24 +1,26 @@
 "use client";
 
-import { LoadingSpinner } from "@/components/loading-spinner";
-import { Button } from "@/components/ui/button";
 import { SignedIn, useAuth } from "@clerk/nextjs";
 import Link from "next/link";
 
 export default function Home() {
-  const user = useAuth();
+  const { userId } = useAuth();
+
   return (
-    <div className="bg-cyan-100">
-      <h1 className="h-16 w-16 text-black">Hello</h1>
-      <Button variant={"secondary"}>Btn</Button>
+    <div className="p-4 space-y-4">
+      <h1 className="text-lg font-bold">Hello</h1>
 
       <SignedIn>
-        <h1>Your User Id is :{user.userId} </h1>
-        <Link href={"/upload"}>Go to Upload</Link>
-        <Link href={"/files"}>Go to Files</Link>
+        <p>Your User ID: {userId}</p>
+        <div className="space-x-2">
+          <Link href="/upload" className="text-blue-600 underline">
+            Upload
+          </Link>
+          <Link href="/files" className="text-blue-600 underline">
+            Files
+          </Link>
+        </div>
       </SignedIn>
-
-      <LoadingSpinner></LoadingSpinner>
     </div>
   );
 }

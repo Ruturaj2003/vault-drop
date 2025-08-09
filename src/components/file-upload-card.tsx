@@ -31,8 +31,17 @@ export const FileUploadCard = () => {
   const router = useRouter();
   const uploadFileData = useMutation(api.userData.uploadFileData);
 
+  const demoUserID = process.env.NEXT_PUBLIC_DEMO_USER_ID;
   const handleSubmit = async () => {
     setIsLoading(true);
+
+    console.log(user.userId);
+    console.log(demoUserID);
+    if (user.userId === demoUserID) {
+      toast.info("This Would Submit the Files");
+      setIsLoading(false);
+      return router.push("/files");
+    }
 
     if (!fileName.trim()) {
       toast.error("Please enter a file name.");

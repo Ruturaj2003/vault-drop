@@ -1,3 +1,4 @@
+"use client";
 import {
   Card,
   CardAction,
@@ -6,11 +7,21 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { MoreVerticalIcon } from "lucide-react";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { MoreVerticalIcon, Trash } from "lucide-react";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import useFileDataStore from "@/store/fileDataStore";
+import { useAuth } from "@clerk/nextjs";
+import { useMutation } from "convex/react";
+import { api } from "../../convex/_generated/api";
 
 interface FileCardProps {
   fileData: {
@@ -37,15 +48,39 @@ export const FileCard = ({ fileData }: FileCardProps) => {
 
     return formatted;
   };
+  const user = useAuth();
+  const demoUserID = process.env.NEXT_PUBLIC_DEMO_USER_ID;
 
   const setCurrentFile = useFileDataStore((state) => state.setCurrentFile);
 
+  const deleteFile = useMutation(api.userData.deleteFile);
+  const updateTime = useMutation(api.userData.updateFileTimeInfo);
   const handleClick = () => {
+    const timestamp = Math.floor(Date.now() / 1000);
+
     toast.info("Opening File " + fileData.fileName);
     setCurrentFile(fileData.id);
+    updateTime({
+      fileId: fileData.id,
+      userId: user.userId!,
+      lastViewedAt: timestamp,
+    });
     route.push("/view/");
   };
 
+  const handleDelete = () => {
+    if (user.userId === demoUserID) {
+      toast.info("This would delete the File");
+      return;
+    }
+
+    deleteFile({
+      fileId: fileData.id,
+      userId: user.userId!,
+    });
+    toast.success("File deleted");
+    return;
+  };
   return (
     <>
       <Card>
@@ -55,7 +90,20 @@ export const FileCard = ({ fileData }: FileCardProps) => {
             Last Viewed at : {timeConverter(fileData.lastViewedAt!)}
           </CardDescription>
           <CardAction>
-            <MoreVerticalIcon></MoreVerticalIcon>
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <MoreVerticalIcon></MoreVerticalIcon>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem
+                  onClick={handleDelete}
+                  className="hover:bg-red-500 hover:text-white"
+                >
+                  <Trash className="hover:text-white"></Trash>
+                  Delete
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </CardAction>
         </CardHeader>
 

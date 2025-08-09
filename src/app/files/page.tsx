@@ -4,7 +4,7 @@ import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { useAuth } from "@clerk/nextjs";
 import { FileCard } from "@/components/file-card";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { LoadingSpinner } from "@/components/loading-spinner";
 import useFileDataStore from "@/store/fileDataStore";
 

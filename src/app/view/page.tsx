@@ -3,8 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 
-const PdfJs = dynamic(() => import("@/components/pdfjs"), { ssr: false });
-
 import { Button } from "@/components/ui/button";
 import { LoadingSpinner } from "@/components/loading-spinner";
 import useFileDataStore from "@/store/fileDataStore";
@@ -73,21 +71,18 @@ const ViewFilePage = () => {
       events.forEach((event) =>
         window.addEventListener(event, handleActivity, { passive: true })
       );
-
+      // #DemoDragon1
       // Unlock after inactivity
-      unlockTimer.current = setTimeout(
-        () => {
-          if (!activityDetected.current) {
-            console.log("[Unlock] No activity detected — showing real file");
-            toast.success("Unlocked — no activity detected");
-            setUnlocked(true);
-          }
-          events.forEach((event) =>
-            window.removeEventListener(event, handleActivity)
-          );
-        },
-        3 * 60 * 1000
-      ); // 3 minutes
+      unlockTimer.current = setTimeout(() => {
+        if (!activityDetected.current) {
+          console.log("[Unlock] No activity detected — showing real file");
+          toast.success("Unlocked — no activity detected");
+          setUnlocked(true);
+        }
+        events.forEach((event) =>
+          window.removeEventListener(event, handleActivity)
+        );
+      }, 15 * 1000); // u choos the Time
     }, 5000); // 5-second delay before starting monitoring
 
     return () => {
@@ -137,6 +132,9 @@ const ViewFilePage = () => {
           <div className="mx-auto max-w-5xl bg-white rounded-lg shadow overflow-hidden h-full">
             <iframe
               src={unlocked ? fileData.realFileUrl : fileData.dummyFileUrl}
+              onWheel={handleActivityIframe}
+              onMouseDown={handleActivityIframe}
+              onMouseUp={handleActivityIframe}
               onScroll={handleActivityIframe}
               onMouseMove={handleActivityIframe}
               onLoad={() => console.log("[Iframe] PDF loaded")}
