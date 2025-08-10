@@ -7,6 +7,8 @@ import { FileCard } from "@/components/file-card";
 import { useEffect } from "react";
 import { LoadingSpinner } from "@/components/loading-spinner";
 import useFileDataStore from "@/store/fileDataStore";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const FilesPage = () => {
   const { userId } = useAuth();
@@ -27,6 +29,11 @@ const FilesPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 px-6 py-10">
+      <div className="max-w-5xl mx-auto flex justify-end items-center">
+        <Link href={"/upload"}>
+          <Button>Add Files</Button>
+        </Link>
+      </div>
       <div className="max-w-5xl mx-auto">
         {fileData?.length === 0 ? (
           <div className="text-center text-gray-600 text-lg">
