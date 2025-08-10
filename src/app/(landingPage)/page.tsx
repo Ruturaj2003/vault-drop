@@ -2,25 +2,17 @@
 
 import { SignedIn, useAuth } from "@clerk/nextjs";
 import Link from "next/link";
+import { Navbar } from "./_components/navbar";
+import ThemeTester from "./_components/themeTester";
 
 export default function Home() {
   const { userId } = useAuth();
 
   return (
-    <div className="p-4 space-y-4">
-      <h1 className="text-lg font-bold">Hello</h1>
-
-      <SignedIn>
-        <p>Your User ID: {userId}</p>
-        <div className="space-x-2">
-          <Link href="/upload" className="text-blue-600 underline">
-            Upload
-          </Link>
-          <Link href="/files" className="text-blue-600 underline">
-            Files
-          </Link>
-        </div>
-      </SignedIn>
+    <div className="">
+      <Navbar />
+      <h1>Hello</h1>
+      <ThemeTester />
     </div>
   );
 }

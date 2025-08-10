@@ -1,0 +1,19 @@
+    <div className="p-4 space-y-4">
+      <Navbar />
+      <h1 className="text-lg font-bold">Hello</h1>
+
+      <SignedIn>
+        <p>Your User ID: {userId}</p>
+        <div className="space-x-2">
+          <Link href="/upload" className="text-blue-600 underline">
+            Upload
+          </Link>
+          <Link href="/files" className="text-blue-600 underline">
+            Files
+          </Link>
+        </div>
+      </SignedIn>
+    </div>
+
+
+    Nabar
