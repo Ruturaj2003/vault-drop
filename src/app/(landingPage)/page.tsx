@@ -10,7 +10,7 @@ export default function Home() {
   const { userId } = useAuth();
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col dark:bg-[rgb(2,10,24)]">
       <Navbar />
       <Hero />
     </div>

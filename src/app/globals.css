@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Inter:wght@400;500&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -6,6 +7,20 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@theme {
+  --font-heading: "Sora", sans-serif;
+  --font-body: "Inter", sans-serif;
+  /* Named colors */
+  --color-primary: oklch(0.72 0.25 250); /* Electric Blue */
+  --color-secondary: oklch(0.65 0.25 295); /* Violet/Purple */
+
+  /* Gradient variable (optional) */
+  --gradient-primary: linear-gradient(
+    135deg,
+    var(--color-primary) 0%,
+    var(--color-secondary) 100%
+  );
+}
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -79,6 +94,13 @@
   --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.606 0.25 292.717);
+  --gradient-primary: linear-gradient(
+    135deg,
+    oklch(0.72 0.25 250) 0%,
+    /* Electric Blue */ oklch(0.65 0.25 295) 100% /* Violet/Purple */
+  );
+  --font-heading: "Sora", sans-serif;
+  --font-body: "Inter", sans-serif;
 }
 
 .dark {
