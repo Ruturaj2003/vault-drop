@@ -10,7 +10,7 @@ import {
 
 export const Hero = () => {
   return (
-    <div className="border border-amber-500 flex justify-center items-center h-[90vh] flex-col gap-y-4  w-full max-w-5xl mx-auto">
+    <div className=" flex justify-center items-center h-[90vh] flex-col gap-y-4  w-full max-w-5xl mx-auto">
       <div className="mx-auto flex justify-center items-center gap-x-4">
         <Lock className="size-10 fill-transparent text-violet-600   bg-gradient-to-r from-[oklch(0.68_0.25_295)] via-[oklch(0.72_0.25_250)] to-[oklch(0.78_0.18_210)] bg-clip-text" />
         <h1 className="text-6xl font-bold text-transparent bg-gradient-to-r from-[oklch(0.68_0.25_295)] via-[oklch(0.72_0.25_250)] to-[oklch(0.78_0.18_210)] bg-clip-text">
