@@ -33,7 +33,8 @@ export const Hero = () => {
         className="
         rounded-lg
         border-accent
-        shadow-[21px_20px_39px_-1px_rgba(222,_222,_222,_0.1)]
+        shadow-lg
+        dark:shadow-[21px_20px_39px_-1px_rgba(222,_222,_222,_0.1)]
         w-full max-w-md border mt-4  flex flex-col justify-center  gap-y-4 p-4 px-6"
       >
         {/* 1 */}
@@ -50,7 +51,7 @@ export const Hero = () => {
             className="
           
           
-          text-md font-body text-primary-foreground"
+          text-md font-body dark:text-primary-foreground"
           >
             Dummy version shown first
           </p>
