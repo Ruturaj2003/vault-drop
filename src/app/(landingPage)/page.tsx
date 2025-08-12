@@ -1,20 +1,20 @@
 "use client";
 
-import { SignedIn, useAuth } from "@clerk/nextjs";
-import Link from "next/link";
 import { Navbar } from "./_components/navbar";
-import ThemeTester from "./_components/themeTester";
+
 import { Hero } from "./_components/hero";
 import { HowItWorks } from "./_components/how-it-works";
+import { UseCases } from "./_components/use-cases";
 
 export default function Home() {
-  const { userId } = useAuth();
-
   return (
-    <div className="flex flex-col dark:bg-[rgb(2,10,24)]">
+    <div className="flex flex-col dark:bg-[rgb(2,10,24)] min-h-screen w-full overflow-x-hidden">
       <Navbar />
-      <Hero />
-      <HowItWorks />
+      <main className="flex flex-col w-full">
+        <Hero />
+        <HowItWorks />
+        <UseCases />
+      </main>
     </div>
   );
 }
