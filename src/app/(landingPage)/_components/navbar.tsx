@@ -20,6 +20,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import Link from "next/link";
+import Image from "next/image";
 
 export const Navbar = () => {
   const { setTheme } = useTheme();
@@ -29,7 +30,8 @@ export const Navbar = () => {
     <nav className="w-full border-b border-vault-border bg-background/80 backdrop-blur-md">
       <div className="max-w-7xl mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo / Brand */}
-        <div className="text-lg sm:text-xl font-semibold tracking-tight text-vault-purple">
+        <div className="text-lg sm:text-xl flex gap-x-2 font-semibold tracking-tight text-vault-purple">
+          <Image src={"./logo.svg"} alt="Logo " width={20} height={20} />
           <Link href={"/files"}>Vault Drop</Link>
         </div>
 
