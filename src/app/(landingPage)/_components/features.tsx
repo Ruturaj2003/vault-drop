@@ -1,47 +1,41 @@
-import {
-  Puzzle,
-  Zap,
-  Smartphone,
-  HardDrive,
-  Clock,
-  Shield,
-} from "lucide-react";
+import { FileText, Key, Puzzle, Hourglass, Eye, Shield } from "lucide-react";
+
 const features = [
   {
+    icon: FileText,
+    title: "PDF-only",
+    description:
+      "Supports PDF files to keep rendering and reveal behavior predictable.",
+  },
+  {
+    icon: Key,
+    title: "Passkey Gate",
+    description:
+      "Require or generate a secret passkey during upload to control access.",
+  },
+  {
     icon: Puzzle,
-    title: "Any Puzzle Content",
+    title: "Made for Games",
     description:
-      "Use images, text, audio, or video as part of your mystery challenge — no format restrictions.",
+      "Built for escape rooms, ARGs, and puzzle events — a reveal mechanic, not a sharing tool.",
   },
   {
-    icon: Zap,
-    title: "Quick Setup",
+    icon: Hourglass,
+    title: "15s Inactivity Unlock",
     description:
-      "Design and load your challenge in seconds with a simple, intuitive interface.",
+      "After a short preview, the viewer must remain inactive for 15 seconds to unlock the real PDF.",
   },
   {
-    icon: Smartphone,
-    title: "Works on Any Device",
+    icon: Eye,
+    title: "Decoy & Reveal",
     description:
-      "Fully responsive for desktop, tablet, and mobile so puzzles can be played anywhere.",
-  },
-  {
-    icon: Clock,
-    title: "Custom Wait Time",
-    description:
-      "Control exactly how long the player must remain still before the reveal happens.",
-  },
-  {
-    icon: HardDrive,
-    title: "Secure Cloud Storage",
-    description:
-      "Files are stored via UploadThing — no public links are exposed and access is restricted to your setup.",
+      "Viewers see the dummy PDF first; any movement or click during the watch window keeps the dummy visible.",
   },
   {
     icon: Shield,
-    title: "Privacy First",
+    title: "Authenticated & Private",
     description:
-      "No public sharing, no social features — completely focused on your standalone puzzle experience.",
+      "Clerk authentication and a Convex backend control access — no public links or sharing.",
   },
 ];
 export const Features = () => {
@@ -50,14 +44,14 @@ export const Features = () => {
       {/* Heading */}
       <div className="max-w-5xl text-center mb-10 sm:mb-12">
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6">
-          Perfect for
+          Built for
           <span className="text-transparent bg-gradient-to-r from-[oklch(0.68_0.25_295)] via-[oklch(0.72_0.25_250)] to-[oklch(0.78_0.18_210)] bg-clip-text ml-4">
-            Every Mystery
+            Simplicity
           </span>
         </h1>
         <p className="max-w-2xl mx-auto text-base sm:text-lg md:text-xl text-muted-foreground px-2">
-          From escape rooms to surprise reveals, Vault Drop adds an element of
-          discovery that makes every experience more engaging.
+          Vault Drop is designed to be powerful yet simple. No complex setups,
+          just pure mystery at your fingertips.
         </p>
       </div>
 

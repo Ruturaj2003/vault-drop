@@ -6,6 +6,7 @@ import { Hero } from "./_components/hero";
 import { HowItWorks } from "./_components/how-it-works";
 import { UseCases } from "./_components/use-cases";
 import { Features } from "./_components/features";
+import { CTA } from "./_components/cta";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
         <HowItWorks />
         <UseCases />
         <Features />
+        <CTA />
       </main>
     </div>
   );
