@@ -5,6 +5,7 @@ import { Navbar } from "./_components/navbar";
 import { Hero } from "./_components/hero";
 import { HowItWorks } from "./_components/how-it-works";
 import { UseCases } from "./_components/use-cases";
+import { Features } from "./_components/features";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
         <Hero />
         <HowItWorks />
         <UseCases />
+        <Features />
       </main>
     </div>
   );
