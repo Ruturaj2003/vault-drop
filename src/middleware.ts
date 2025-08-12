@@ -1,9 +1,13 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { NextResponse } from "next/server";
 
-const isProtectedRoute = createRouteMatcher(["/upload"]);
+const isProtectedRoute = createRouteMatcher(["/upload", "/files", "/view"]);
 
 export default clerkMiddleware(async (auth, req) => {
-  if (isProtectedRoute(req)) await auth.protect();
+  const { userId } = await auth();
+  if (isProtectedRoute(req) && !userId) {
+    return NextResponse.redirect(new URL("/", req.url));
+  }
 });
 
 export const config = {

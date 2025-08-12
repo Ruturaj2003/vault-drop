@@ -1,7 +1,17 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
-
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { useState } from "react";
 export const CTA = () => {
+  const [demoOpen, setDemoOpen] = useState(false);
   return (
     <section className="flex flex-col justify-center items-center min-h-[90vh] gap-6 w-full max-w-5xl mx-auto px-4">
       {/* Badge */}
@@ -35,12 +45,38 @@ export const CTA = () => {
           Create Your First Vault
           <ArrowRight className="ml-2" />
         </Button>
-        <Button
-          variant="outline"
-          className="w-full sm:w-[35%] py-6 text-md font-bold"
-        >
-          Try Demo Vault
-        </Button>
+        {/* Demo Modal Trigger */}
+        <Dialog open={demoOpen} onOpenChange={setDemoOpen}>
+          <DialogTrigger asChild>
+            <Button variant="ghost" className="font-medium">
+              Demo
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle className="text-lg font-semibold">
+                Demo Account
+              </DialogTitle>
+              <DialogDescription>
+                Use the following credentials to try Vault Drop.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="mt-4 space-y-2">
+              <div className="flex flex-col">
+                <span className="font-medium">Email:</span>
+                <span className="text-sm text-muted-foreground">
+                  demouser@gmail.com
+                </span>
+              </div>
+              <div className="flex flex-col">
+                <span className="font-medium">Password:</span>
+                <span className="text-sm text-muted-foreground">
+                  #DemoDragon1
+                </span>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
 
       {/* Built With */}
