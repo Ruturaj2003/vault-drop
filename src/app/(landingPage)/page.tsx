@@ -7,6 +7,7 @@ import { HowItWorks } from "./_components/how-it-works";
 import { UseCases } from "./_components/use-cases";
 import { Features } from "./_components/features";
 import { CTA } from "./_components/cta";
+import { Footer } from "./_components/footer";
 
 export default function Home() {
   return (
@@ -18,6 +19,7 @@ export default function Home() {
         <UseCases />
         <Features />
         <CTA />
+        <Footer></Footer>
       </main>
     </div>
   );
