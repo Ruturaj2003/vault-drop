@@ -23,30 +23,32 @@ const FilesPage = () => {
       setFileData(fileData);
     }
   }, [fileData, setFileData]);
+
   if (fileData === undefined) {
-    return <LoadingSpinner></LoadingSpinner>;
+    return <LoadingSpinner />;
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 px-6 py-10">
+    <div className="min-h-screen bg-gray-100 dark:bg-slate-900 px-6 py-10 transition-colors">
       <div className="max-w-5xl mx-auto flex justify-end items-center">
-        <Link href={"/upload"}>
+        <Link href="/upload">
           <Button>Add Files</Button>
         </Link>
       </div>
+
       <div className="max-w-5xl mx-auto">
         {fileData?.length === 0 ? (
-          <div className="text-center text-gray-600 text-lg">
+          <div className="text-center text-gray-600 dark:text-gray-400 text-lg">
             No files uploaded yet.
           </div>
         ) : (
           <>
-            <h1 className="text-2xl font-semibold mb-6 text-gray-800">
+            <h1 className="text-2xl font-semibold mb-6 text-gray-800 dark:text-gray-100">
               Your Files
             </h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               {fileData?.map((file) => (
-                <FileCard fileData={file} key={file.id}></FileCard>
+                <FileCard fileData={file} key={file.id} />
               ))}
             </div>
           </>

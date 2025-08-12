@@ -38,16 +38,15 @@ interface FileCardProps {
 export const FileCard = ({ fileData }: FileCardProps) => {
   const route = useRouter();
   const timeConverter = (time: number) => {
-    const seconds = time;
-    const date = new Date(seconds * 1000); // convert to milliseconds
-    const formatted = date.toLocaleDateString("en-GB", {
+    if (!time) return "Never";
+    const date = new Date(time * 1000);
+    return date.toLocaleDateString("en-GB", {
       day: "numeric",
       month: "long",
       year: "numeric",
     });
-
-    return formatted;
   };
+
   const user = useAuth();
   const demoUserID = process.env.NEXT_PUBLIC_DEMO_USER_ID;
 
@@ -55,6 +54,7 @@ export const FileCard = ({ fileData }: FileCardProps) => {
 
   const deleteFile = useMutation(api.userData.deleteFile);
   const updateTime = useMutation(api.userData.updateFileTimeInfo);
+
   const handleClick = () => {
     const timestamp = Math.floor(Date.now() / 1000);
 
@@ -79,40 +79,44 @@ export const FileCard = ({ fileData }: FileCardProps) => {
       userId: user.userId!,
     });
     toast.success("File deleted");
-    return;
   };
-  return (
-    <>
-      <Card>
-        <CardHeader>
-          <CardTitle>{fileData.fileName}</CardTitle>
-          <CardDescription>
-            Last Viewed at : {timeConverter(fileData.lastViewedAt!)}
-          </CardDescription>
-          <CardAction>
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <MoreVerticalIcon></MoreVerticalIcon>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuItem
-                  onClick={handleDelete}
-                  className="hover:bg-red-500 hover:text-white"
-                >
-                  <Trash className="hover:text-white"></Trash>
-                  Delete
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </CardAction>
-        </CardHeader>
 
-        <CardFooter>
-          <Button onClick={handleClick} variant={"outline"} className="flex-1">
-            Open
-          </Button>
-        </CardFooter>
-      </Card>
-    </>
+  return (
+    <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 transition-colors">
+      <CardHeader>
+        <CardTitle className="text-gray-900 dark:text-gray-100">
+          {fileData.fileName}
+        </CardTitle>
+        <CardDescription className="text-gray-600 dark:text-gray-400">
+          Last Viewed: {timeConverter(fileData.lastViewedAt!)}
+        </CardDescription>
+        <CardAction>
+          <DropdownMenu>
+            <DropdownMenuTrigger className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+              <MoreVerticalIcon />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+              <DropdownMenuItem
+                onClick={handleDelete}
+                className="hover:bg-red-500 hover:text-white transition-colors"
+              >
+                <Trash className="mr-2" size={16} />
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </CardAction>
+      </CardHeader>
+
+      <CardFooter>
+        <Button
+          onClick={handleClick}
+          variant="outline"
+          className="flex-1 border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+        >
+          Open
+        </Button>
+      </CardFooter>
+    </Card>
   );
 };
