@@ -61,20 +61,28 @@ export const UseCases = () => {
         {useCases.map((item, idx) => (
           <div
             key={idx}
-            className="border hover:transform hover:-translate-y-1 transition-all h-full w-full flex flex-col items-start p-4 rounded-lg bg-[#020a18a9] shadow border-[#394558] hover:bg-[#020a18]"
+            className="border hover:transform hover:-translate-y-1 transition-all h-full w-full flex flex-col items-start p-4 rounded-lg
+                       bg-white dark:bg-[#020a18a9]
+                       border-gray-200 dark:border-[#394558]
+                       shadow hover:bg-gray-50 dark:hover:bg-[#020a18]"
           >
             {/* Icon */}
             <div className="py-4 w-full flex justify-start">
-              <div className="bg-gradient-to-r from-[oklch(0.68_0.25_295)] via-[oklch(0.72_0.25_250)] to-[oklch(0.78_0.18_210)] p-3 rounded-lg text-white">
+              <div
+                className="bg-gradient-to-r from-[oklch(0.68_0.25_295)] via-[oklch(0.72_0.25_250)] to-[oklch(0.78_0.18_210)]
+                              p-3 rounded-lg text-white shadow-md"
+              >
                 <item.icon className="w-6 h-6" />
               </div>
             </div>
             {/* Title */}
-            <div className="font-header font-bold mt-2 text-lg">
+            <div className="font-header font-bold mt-2 text-lg text-gray-900 dark:text-gray-100">
               {item.title}
             </div>
             {/* Text */}
-            <p className="text-muted-foreground">{item.description}</p>
+            <p className="text-gray-600 dark:text-gray-400">
+              {item.description}
+            </p>
           </div>
         ))}
       </div>
