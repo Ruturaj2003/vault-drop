@@ -19,6 +19,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import Link from "next/link";
 
 export const Navbar = () => {
   const { setTheme } = useTheme();
@@ -29,7 +30,7 @@ export const Navbar = () => {
       <div className="max-w-7xl mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo / Brand */}
         <div className="text-lg sm:text-xl font-semibold tracking-tight text-vault-purple">
-          Vault Drop
+          <Link href={"/files"}>Vault Drop</Link>
         </div>
 
         {/* Controls */}

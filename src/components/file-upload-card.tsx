@@ -35,8 +35,6 @@ export const FileUploadCard = () => {
   const handleSubmit = async () => {
     setIsLoading(true);
 
-    console.log(user.userId);
-    console.log(demoUserID);
     if (user.userId === demoUserID) {
       toast.info("This Would Submit the Files");
       setIsLoading(false);
@@ -79,31 +77,40 @@ export const FileUploadCard = () => {
   };
 
   return (
-    <div className="flex  justify-center mx-auto   items-center   px-4">
-      <Card className="w-full max-w-3xl  overflow-y-auto p-6 rounded-xl shadow-md bg-white">
+    <div className="flex justify-center mx-auto items-center px-4">
+      <Card className="w-full max-w-3xl overflow-y-auto p-6 rounded-xl shadow-md bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
         <CardHeader>
-          <CardTitle className="text-xl">Upload Your Files</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-xl text-gray-900 dark:text-gray-100">
+            Upload Your Files
+          </CardTitle>
+          <CardDescription className="text-gray-600 dark:text-gray-400">
             Upload both your real and dummy files with a proper display name.
           </CardDescription>
         </CardHeader>
 
-        <CardContent className="space-y-2">
+        <CardContent className="space-y-4">
           <div className="space-y-2">
-            <label className="text-sm font-medium">File Display Name</label>
+            <label className="text-sm font-medium text-gray-800 dark:text-gray-200">
+              File Display Name
+            </label>
             <Input
               placeholder="Enter display name"
               value={fileName}
               onChange={(e) => setFileName(e.target.value)}
+              className="dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100"
             />
           </div>
-          <div className="flex justify-around items-center">
+          <div className="flex flex-col sm:flex-row justify-around gap-6">
             {/* Real File Upload */}
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Real File</label>
+            <div className="space-y-2 flex-1">
+              <label className="text-sm font-medium text-gray-800 dark:text-gray-200">
+                Real File
+              </label>
               {realFileUrl ? (
-                <div className="size-55 p-2 flex flex-col gap-y-2 justify-center rounded-lg items-center border border-dashed border-gray-400">
-                  <h1 className="text-md">{realFileName}</h1>
+                <div className="p-3 flex flex-col gap-y-3 justify-center rounded-lg items-center border border-dashed border-gray-400 dark:border-gray-600 bg-gray-50 dark:bg-gray-800">
+                  <h1 className="text-md text-gray-900 dark:text-gray-100">
+                    {realFileName}
+                  </h1>
                   <Button
                     variant="destructive"
                     size="sm"
@@ -117,7 +124,7 @@ export const FileUploadCard = () => {
                 </div>
               ) : (
                 <UploadFileDropzone
-                  className="h-[200px] size-52"
+                  className="h-[200px] w-full dark:border-gray-700 dark:bg-gray-800"
                   endpoint="fileUploader"
                   onClientUploadComplete={(res) => {
                     toast.success("Real file uploaded.");
@@ -132,11 +139,15 @@ export const FileUploadCard = () => {
             </div>
 
             {/* Dummy File Upload */}
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Dummy File</label>
+            <div className="space-y-2 flex-1">
+              <label className="text-sm font-medium text-gray-800 dark:text-gray-200">
+                Dummy File
+              </label>
               {dummyFileUrl ? (
-                <div className="size-55 p-2 flex flex-col gap-y-2 justify-center rounded-lg items-center border border-dashed border-gray-400">
-                  <h1 className="text-md">{dummyFileName}</h1>
+                <div className="p-3 flex flex-col gap-y-3 justify-center rounded-lg items-center border border-dashed border-gray-400 dark:border-gray-600 bg-gray-50 dark:bg-gray-800">
+                  <h1 className="text-md text-gray-900 dark:text-gray-100">
+                    {dummyFileName}
+                  </h1>
                   <Button
                     variant="destructive"
                     size="sm"
@@ -150,7 +161,7 @@ export const FileUploadCard = () => {
                 </div>
               ) : (
                 <UploadFileDropzone
-                  className="h-[200px] size-52"
+                  className="h-[200px] w-full dark:border-gray-700 dark:bg-gray-800"
                   endpoint="fileUploader"
                   onClientUploadComplete={(res) => {
                     toast.success("Dummy file uploaded.");
@@ -170,7 +181,7 @@ export const FileUploadCard = () => {
           <Button
             onClick={handleSubmit}
             disabled={isLoading}
-            className="w-full"
+            className="w-full dark:bg-violet-600 dark:hover:bg-violet-700"
           >
             {isLoading ? "Uploading..." : "Submit"}
           </Button>
