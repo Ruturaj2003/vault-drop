@@ -22,13 +22,44 @@ Password: #DemoDragon1
 
 ## 📸 Screenshots
 
-![File Name](public/screenshots/file-name.png)
-![Dummy File](public/screenshots/dummy-file.png)
-![File Upload](public/screenshots/file-upload.png)
-![Files Page](public/screenshots/files-page.png)
-![Generate Pass](public/screenshots/generate-pass.png)
+**Landing Page**  
+The homepage showcasing Vault Drop’s features and purpose.  
 ![Landing Page](public/screenshots/landing-page.png)
+
+---
+
+**File Upload**  
+Interface for uploading both real and dummy PDF files.  
+![File Upload](public/screenshots/file-upload.png)
+
+---
+
+**Dummy File**  
+Shows the placeholder or decoy file that hides the real one.  
+![Dummy File](public/screenshots/dummy-file.png)
+
+---
+
+**Real File**  
+Example of the genuine file after unlocking.  
 ![Real File](public/screenshots/real-file.png)
+
+---
+
+**Files Page**  
+Dashboard view of all uploaded files, showing only the real ones.  
+![Files Page](public/screenshots/files-page.png)
+
+---
+
+**Generate Pass**  
+Form to generate a secure pass for accessing locked files.  
+![Generate Pass](public/screenshots/generate-pass.png)
+
+---
+
+**Verify Pass**  
+Verification step where the pass is checked before unlocking.  
 ![Verify Pass](public/screenshots/verify-pass.png)
 
 ---
