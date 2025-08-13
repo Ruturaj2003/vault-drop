@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { SignUpButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { Moon, Sun, Github } from "lucide-react";
 import { useTheme } from "next-themes";
 import {
@@ -88,11 +88,11 @@ export const Navbar = () => {
             </Dialog>
 
             {/* Sign Up */}
-            <SignUpButton signInForceRedirectUrl={"/files"} mode="modal">
+            <Link href={"/sign-up"}>
               <Button className="bg-primary text-primary-foreground rounded-full font-medium">
                 Get Started
               </Button>
-            </SignUpButton>
+            </Link>
           </SignedOut>
 
           <SignedIn>

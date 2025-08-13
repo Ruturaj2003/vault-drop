@@ -1,28 +1,30 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
+// Define protected routes
 const isProtectedRoute = createRouteMatcher(["/upload", "/files", "/view"]);
-// const isRootRoute = createRouteMatcher(["/"]);
 
 export default clerkMiddleware(async (auth, req) => {
   const { userId } = await auth();
 
-  // If not logged in, redirect from protected routes to "/"
+  // Redirect unauthenticated users away from protected routes
   if (isProtectedRoute(req) && !userId) {
     return NextResponse.redirect(new URL("/", req.url));
   }
 
-  // // If logged in and at root, redirect to "/files"
-  // if (isRootRoute(req) && userId) {
-  //   return NextResponse.redirect(new URL("/files", req.url));
-  // }
+  // Continue to the requested page
+  return NextResponse.next();
 });
 
 export const config = {
   matcher: [
-    // Skip Next.js internals and all static files, unless found in search params
+    // Match all routes except:
+    // - Next.js internals (_next)
+    // - Static files (by extension)
+    // - Unless explicitly in search params
     "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
-    // Always run for API routes
+
+    // Always check API & tRPC routes
     "/(api|trpc)(.*)",
   ],
 };

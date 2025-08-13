@@ -61,7 +61,7 @@ export const GeneratePassPhraseCard = ({
   };
 
   return (
-    <Card className="max-w-md mx-auto shadow-lg border rounded-2xl bg-white dark:bg-neutral-900 border-gray-200 dark:border-neutral-800">
+    <Card className="max-w-md mx-auto shadow-lg mt-18 border rounded-2xl bg-white dark:bg-neutral-900 border-gray-200 dark:border-neutral-800">
       <CardHeader>
         <CardTitle className="text-lg font-semibold text-gray-900 dark:text-white">
           Secure Your Access

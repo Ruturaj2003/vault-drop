@@ -77,7 +77,7 @@ export const FileUploadCard = () => {
   };
 
   return (
-    <div className="flex justify-center mx-auto items-center px-4">
+    <div className="flex justify-center mx-auto items-center px-4 mt-16">
       <Card className="w-full max-w-3xl overflow-y-auto p-6 rounded-xl shadow-md bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
         <CardHeader>
           <CardTitle className="text-xl text-gray-900 dark:text-gray-100">

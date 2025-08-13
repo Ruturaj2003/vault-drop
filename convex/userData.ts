@@ -128,7 +128,7 @@ export const updateFileTimeInfo = mutation({
 });
 
 export const getFiles = query({
-  args: { userId: v.string() },
+  args: { userId: v.optional(v.string()) },
   handler: async (ctx, args) => {
     const user = await ctx.db
       .query("userData")
@@ -138,7 +138,8 @@ export const getFiles = query({
       .first();
 
     if (user === null) {
-      throw new ConvexError("Unauthorized");
+      // throw new ConvexError("Unauthorized");
+      return [];
     }
     if (!user.filesData) {
       return [];
