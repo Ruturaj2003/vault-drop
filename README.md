@@ -20,11 +20,16 @@ Password: #DemoDragon1
 
 ## Preview
 
-![Landing Page](https://chatgpt.com/c/images/landing-page.png)
+## 📸 Screenshots
 
-![Files Page](https://chatgpt.com/c/images/files-page.png)
-
-![Upload Page](https://chatgpt.com/c/images/upload-page.png)
+![File Name](public/screenshots/file-name.png)
+![Dummy File](public/screenshots/dummy-file.png)
+![File Upload](public/screenshots/file-upload.png)
+![Files Page](public/screenshots/files-page.png)
+![Generate Pass](public/screenshots/generate-pass.png)
+![Landing Page](public/screenshots/landing-page.png)
+![Real File](public/screenshots/real-file.png)
+![Verify Pass](public/screenshots/verify-pass.png)
 
 ---
 
