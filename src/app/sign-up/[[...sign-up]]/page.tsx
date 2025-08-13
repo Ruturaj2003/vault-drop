@@ -11,6 +11,7 @@ export default function Page() {
           Join us and start creating vaults in seconds.
         </p>
         <SignUp
+          forceRedirectUrl={"/files"}
           path="/sign-up"
           routing="path"
           appearance={{

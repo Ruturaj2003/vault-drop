@@ -11,6 +11,7 @@ export default function Page() {
           Sign in to continue to your account
         </p>
         <SignIn
+          forceRedirectUrl={"/files"}
           path="/sign-in" // required when routing="path"
           routing="path"
           appearance={{
