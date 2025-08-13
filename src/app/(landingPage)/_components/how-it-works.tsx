@@ -29,7 +29,10 @@ export const HowItWorks = () => {
   ];
 
   return (
-    <section className="flex flex-col justify-center items-center min-h-[90vh] w-full    py-12 sm:py-16 lg:py-20 shadow-[0px_-5px_9px_-1px_rgba(199,_199,_199,_0.35)] bg-background">
+    <section
+      id="HowItWorks"
+      className="flex flex-col justify-center items-center min-h-[90vh] w-full    py-12 sm:py-16 lg:py-20 shadow-[0px_-5px_9px_-1px_rgba(199,_199,_199,_0.35)] bg-background"
+    >
       {/* Heading */}
       <div className="max-w-5xl text-center mb-10 sm:mb-12">
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6">

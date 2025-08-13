@@ -83,6 +83,12 @@ export const Navbar = () => {
                       #DemoDragon1
                     </span>
                   </div>
+                  <div className="flex flex-col">
+                    <span className="font-medium">Pass Phrase:</span>
+                    <span className="text-sm text-muted-foreground">
+                      Demo User
+                    </span>
+                  </div>
                 </div>
               </DialogContent>
             </Dialog>

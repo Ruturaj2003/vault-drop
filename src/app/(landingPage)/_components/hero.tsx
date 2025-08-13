@@ -7,6 +7,7 @@ import {
   Lock,
   LockIcon,
 } from "lucide-react";
+import Link from "next/link";
 
 export const Hero = () => {
   return (
@@ -60,13 +61,17 @@ export const Hero = () => {
 
       {/* Buttons */}
       <div className="flex flex-col sm:flex-row items-center mt-4 gap-3 sm:gap-x-6">
-        <Button className="w-full sm:w-auto">
-          Start Creating Vaults
-          <ArrowRight />
-        </Button>
-        <Button variant="outline" className="w-full sm:w-auto">
-          See How It Works
-        </Button>
+        <Link href={"/sign-up"}>
+          <Button className="w-full sm:w-auto">
+            Start Creating Vaults
+            <ArrowRight />
+          </Button>
+        </Link>
+        <a href="#HowItWorks">
+          <Button variant="outline" className="w-full sm:w-auto">
+            See How It Works
+          </Button>
+        </a>
       </div>
 
       {/* 3 points */}

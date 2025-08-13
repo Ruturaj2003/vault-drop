@@ -10,6 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useState } from "react";
+import Link from "next/link";
 export const CTA = () => {
   const [demoOpen, setDemoOpen] = useState(false);
   return (
@@ -41,10 +42,13 @@ export const CTA = () => {
 
       {/* Buttons */}
       <div className="flex flex-col sm:flex-row w-full justify-center gap-4 sm:gap-8">
-        <Button className="w-full sm:w-[35%] py-6 text-md font-bold text-black bg-gradient-to-r from-[oklch(0.68_0.25_295)] via-[oklch(0.72_0.25_250)] to-[oklch(0.78_0.18_210)]">
-          Create Your First Vault
-          <ArrowRight className="ml-2" />
-        </Button>
+        <Link href={"/sign-in"} className="w-full sm:w-[35%]">
+          <Button className=" py-6 text-md font-bold text-black bg-gradient-to-r from-[oklch(0.68_0.25_295)] via-[oklch(0.72_0.25_250)] to-[oklch(0.78_0.18_210)]">
+            Create Your First Vault
+            <ArrowRight className="ml-2" />
+          </Button>
+        </Link>
+
         {/* Demo Modal Trigger */}
         <Dialog open={demoOpen} onOpenChange={setDemoOpen}>
           <DialogTrigger asChild>
@@ -73,6 +77,10 @@ export const CTA = () => {
                 <span className="text-sm text-muted-foreground">
                   #DemoDragon1
                 </span>
+              </div>
+              <div className="flex flex-col">
+                <span className="font-medium">Pass Phrase:</span>
+                <span className="text-sm text-muted-foreground">Demo User</span>
               </div>
             </div>
           </DialogContent>

@@ -6,13 +6,14 @@ A small web app that lets users store two versions of a file — a dummy and the
 
 ## Demo
 
-**Live Demo:** [Add your deployed link here]
+**Live Demo:** [Vault Drop on Vercel](https://vault-drop-ebon.vercel.app/)
 
 **Demo Credentials:**
 
 ```
 Email: demouser@gmail.com
 Password: #DemoDragon1
+Pass Phrase : Demo User
 
 ```
 
